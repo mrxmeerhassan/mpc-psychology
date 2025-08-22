@@ -11,24 +11,34 @@ export async function GET() {
   }
 
   try {
+    // Only send to verified email address
+    const testEmail = "meerhassan11@icloud.com";
+    
     const result = await resend.emails.send({
       from: 'MPC Psychology Center <onboarding@resend.dev>',
-      to: [process.env.CONTACT_TO_EMAIL || 'test@example.com'],
+      to: [testEmail],
       subject: 'Test Email from MPC Psychology Center',
-      html: '<p>This is a test email to verify your email setup is working!</p>',
+      html: `
+        <h2>Test Email Success!</h2>
+        <p>Your email setup is working correctly.</p>
+        <p>This test email was sent to: ${testEmail}</p>
+        <p>Time: ${new Date().toLocaleString()}</p>
+      `,
     });
 
     console.log('Test email sent successfully:', result);
     return Response.json({ 
       success: true, 
-      message: 'Test email sent successfully',
+      message: 'Test email sent successfully to verified email',
+      sentTo: testEmail,
       result 
     });
   } catch (error) {
     console.error('Test email failed:', error);
     return Response.json({ 
       error: 'Failed to send test email',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      details: error instanceof Error ? error.message : 'Unknown error',
+      note: 'Make sure you are using the verified email address (meerhassan11@icloud.com)'
     });
   }
 }
