@@ -1,87 +1,86 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
+import NavBar from "@/components/NavBar";
+import SEO from "@/components/SEO";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: {
-    default: "MPC Psychology Center - Professional Mental Health Services",
-    template: "%s | MPC Psychology Center",
-  },
-  description:
-    "MPC Psychology Center offers evidence-based psychotherapy, counseling, and mental health services. Book your free consultation today for personalized care.",
-  keywords: "psychology, therapy, mental health, counseling, psychotherapy, anxiety, depression, CBT, ACT, DBT, online therapy",
-  authors: [{ name: "MPC Psychology Center" }],
-  creator: "MPC Psychology Center",
-  publisher: "MPC Psychology Center",
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://mpc-psychology.com"),
-  alternates: {
-    canonical: "/",
-  },
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    url: process.env.NEXT_PUBLIC_SITE_URL || "https://mpc-psychology.com",
-    title: "MPC Psychology Center - Professional Mental Health Services",
-    description: "MPC Psychology Center offers evidence-based psychotherapy, counseling, and mental health services. Book your free consultation today for personalized care.",
-    siteName: "MPC Psychology Center",
-    images: [
-      {
-        url: "/web.png",
-        width: 1200,
-        height: 630,
-        alt: "MPC Psychology Center Logo",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "MPC Psychology Center - Professional Mental Health Services",
-    description: "MPC Psychology Center offers evidence-based psychotherapy, counseling, and mental health services. Book your free consultation today for personalized care.",
-    images: ["/web.png"],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
-  verification: {
-    google: process.env.GOOGLE_VERIFICATION,
-  },
+	title: "MPC Psychology Center - Professional Mental Health Services",
+	description: "MPC Psychology Center offers professional therapy, counseling, and mental health services. Book your free consultation today.",
+	keywords: "psychology, therapy, counseling, mental health, therapist, psychologist, anxiety, depression, stress, MPC Psychology Center",
+	authors: [{ name: "MPC Psychology Center" }],
+	creator: "MPC Psychology Center",
+	publisher: "MPC Psychology Center",
+	robots: "index, follow",
+	openGraph: {
+		title: "MPC Psychology Center - Professional Mental Health Services",
+		description: "Professional therapy and counseling services. Book your free consultation today.",
+		url: "https://mpc-psychological-center.vercel.app",
+		siteName: "MPC Psychology Center",
+		images: [
+			{
+				url: "https://mpc-psychological-center.vercel.app/web.png",
+				width: 1200,
+				height: 630,
+				alt: "MPC Psychology Center Logo",
+			},
+		],
+		locale: "en_US",
+		type: "website",
+	},
+	twitter: {
+		card: "summary_large_image",
+		title: "MPC Psychology Center - Professional Mental Health Services",
+		description: "Professional therapy and counseling services. Book your free consultation today.",
+		images: ["https://mpc-psychological-center.vercel.app/web.png"],
+	},
+	verification: {
+		google: "your-google-verification-code", // Add your Google verification code here
+	},
 };
 
 export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-gray-900`}
-      >
-        {children}
-      </body>
-    </html>
-  );
+	children,
+}: {
+	children: React.ReactNode;
+}) {
+	return (
+		<html lang="en">
+			<head>
+				{/* Google Analytics */}
+				<script
+					async
+					src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"
+				/>
+				<script
+					dangerouslySetInnerHTML={{
+						__html: `
+							window.dataLayer = window.dataLayer || [];
+							function gtag(){dataLayer.push(arguments);}
+							gtag('js', new Date());
+							gtag('config', 'GA_MEASUREMENT_ID');
+						`,
+					}}
+				/>
+				
+				{/* Google Search Console Verification */}
+				<meta name="google-site-verification" content="your-verification-code" />
+				
+				{/* Other SEO Meta Tags */}
+				<link rel="canonical" href="https://mpc-psychological-center.vercel.app" />
+				<meta name="viewport" content="width=device-width, initial-scale=1" />
+				<meta name="theme-color" content="#0ea5e9" />
+				<link rel="icon" href="/web.png" />
+				<link rel="apple-touch-icon" href="/web.png" />
+				<link rel="manifest" href="/site.webmanifest" />
+			</head>
+			<body className={inter.className}>
+				<SEO />
+				<NavBar />
+				{children}
+			</body>
+		</html>
+	);
 }
