@@ -1,0 +1,47 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e0f2fe;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#b3e5fc;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="400" fill="url(#bg)"/>
+  
+  <!-- Portrait frame -->
+  <circle cx="200" cy="200" r="120" fill="#f8fafc" stroke="#0ea5e9" stroke-width="3"/>
+  
+  <!-- Face outline -->
+  <ellipse cx="200" cy="180" rx="60" ry="70" fill="#f1f5f9"/>
+  
+  <!-- Eyes -->
+  <circle cx="180" cy="170" r="8" fill="#334155"/>
+  <circle cx="220" cy="170" r="8" fill="#334155"/>
+  
+  <!-- Eyebrows -->
+  <path d="M 170 160 Q 180 155 190 160" stroke="#334155" stroke-width="2" fill="none"/>
+  <path d="M 210 160 Q 220 155 230 160" stroke="#334155" stroke-width="2" fill="none"/>
+  
+  <!-- Nose -->
+  <path d="M 200 180 Q 200 190 200 200" stroke="#64748b" stroke-width="2" fill="none"/>
+  
+  <!-- Mustache -->
+  <path d="M 170 200 Q 185 205 200 200 Q 215 205 230 200" stroke="#334155" stroke-width="3" fill="none"/>
+  
+  <!-- Beard -->
+  <path d="M 160 210 Q 180 230 200 220 Q 220 230 240 210" stroke="#334155" stroke-width="2" fill="none"/>
+  
+  <!-- Glasses -->
+  <circle cx="180" cy="170" r="15" fill="none" stroke="#0ea5e9" stroke-width="2"/>
+  <circle cx="220" cy="170" r="15" fill="none" stroke="#0ea5e9" stroke-width="2"/>
+  <line x1="195" y1="170" x2="205" y2="170" stroke="#0ea5e9" stroke-width="2"/>
+  
+  <!-- Text -->
+  <text x="200" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#0ea5e9" font-weight="bold">
+    Sigmund Freud
+  </text>
+  <text x="200" y="370" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#64748b">
+    Father of Psychology
+  </text>
+</svg>
