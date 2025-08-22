@@ -1,8 +1,8 @@
-import { getArticles } from "@/lib/mdx";
+import { readAllContent } from "@/lib/mdx";
 import Link from "next/link";
 
 export default async function ArticlesPage() {
-  const articles = await getArticles();
+  const articles = readAllContent("articles");
 
   return (
     <div>
@@ -41,7 +41,7 @@ export default async function ArticlesPage() {
                 </p>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-gray-500">
-                    {new Date(article.date).toLocaleDateString()}
+                    {article.date && new Date(article.date).toLocaleDateString()}
                   </span>
                   <Link 
                     href={`/articles/${article.slug}`}
