@@ -13,7 +13,7 @@ export async function POST(request: Request): Promise<Response> {
 
 		const toEmail = process.env.CONTACT_TO_EMAIL || "meerhassan11@icloud.com";
 		
-		// Use Resend's default domain for now (works with any email)
+		// Use Resend's default domain
 		const fromEmail = "onboarding@resend.dev";
 
 		// Therapist email template
@@ -106,7 +106,7 @@ export async function POST(request: Request): Promise<Response> {
 
 		if (resend) {
 			try {
-				// Send email to therapist (always works)
+				// Always send to therapist (verified email)
 				await resend.emails.send({
 					from: `MPC Psychology Center <${fromEmail}>`,
 					to: [toEmail],
@@ -115,16 +115,26 @@ export async function POST(request: Request): Promise<Response> {
 					replyTo: email,
 				});
 
-				// Send confirmation email to client (always works)
-				await resend.emails.send({
-					from: `MPC Psychology Center <${fromEmail}>`,
-					to: [email],
-					subject: "Your Consultation Request - MPC Psychology Center",
-					html: clientEmailHtml,
-				});
+				// Try to send to client, but handle failures gracefully
+				try {
+					await resend.emails.send({
+						from: `MPC Psychology Center <${fromEmail}>`,
+						to: [email],
+						subject: "Your Consultation Request - MPC Psychology Center",
+						html: clientEmailHtml,
+					});
+					console.log("Client email sent successfully", { email });
+				} catch (clientEmailError) {
+					console.log("Client email failed (unverified email)", { email, error: clientEmailError });
+					// Don't fail the whole request, just log it
+				}
 
 				console.log("Consultation request processed successfully", { name, email });
-				return Response.json({ ok: true, message: "Request received successfully. You will receive a confirmation email shortly." });
+				return Response.json({ 
+					ok: true, 
+					message: "Request received successfully. We will contact you within 24 hours.",
+					note: "If you don't receive a confirmation email, please check your spam folder or contact us directly."
+				});
 			} catch (error) {
 				console.error("Failed to send emails", error);
 				

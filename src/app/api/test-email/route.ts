@@ -6,13 +6,14 @@ export async function GET() {
   if (!resend) {
     return Response.json({ 
       error: 'No Resend API key configured',
-      message: 'Please add RESEND_API_KEY to environment variables'
+      message: 'Please add RESEND_API_KEY to environment variables',
+      note: 'Go to Vercel → Settings → Environment Variables → Add RESEND_API_KEY'
     });
   }
 
   try {
-    // Only send to verified email address
-    const testEmail = "meerhassan11@icloud.com";
+    // Test with any email address
+    const testEmail = "hassanmeer560@gmail.com"; // Change this to any email you want to test
     
     const result = await resend.emails.send({
       from: 'MPC Psychology Center <onboarding@resend.dev>',
@@ -23,22 +24,25 @@ export async function GET() {
         <p>Your email setup is working correctly.</p>
         <p>This test email was sent to: ${testEmail}</p>
         <p>Time: ${new Date().toLocaleString()}</p>
+        <p>API Key: ${process.env.RESEND_API_KEY ? 'Configured' : 'Missing'}</p>
       `,
     });
 
     console.log('Test email sent successfully:', result);
     return Response.json({ 
       success: true, 
-      message: 'Test email sent successfully to verified email',
+      message: 'Test email sent successfully',
       sentTo: testEmail,
-      result 
+      result,
+      apiKeyStatus: process.env.RESEND_API_KEY ? 'Configured' : 'Missing'
     });
   } catch (error) {
     console.error('Test email failed:', error);
     return Response.json({ 
       error: 'Failed to send test email',
       details: error instanceof Error ? error.message : 'Unknown error',
-      note: 'Make sure you are using the verified email address (meerhassan11@icloud.com)'
+      apiKeyStatus: process.env.RESEND_API_KEY ? 'Configured' : 'Missing',
+      note: 'Check your Resend API key and email configuration'
     });
   }
 }
