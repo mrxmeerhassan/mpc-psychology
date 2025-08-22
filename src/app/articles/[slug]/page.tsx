@@ -1,5 +1,5 @@
 import { readAllContent, readContentBySlug } from "@/lib/mdx";
-import NavBar from "@/components/NavBar";
+
 import { MDXRemote } from "next-mdx-remote/rsc";
 import Link from "next/link";
 
@@ -14,7 +14,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 	
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-cyan-50 via-white to-blue-50">
-			<NavBar />
 			
 			{/* Article Header */}
 			<section className="relative overflow-hidden bg-gradient-to-r from-cyan-600 to-blue-600 text-white">

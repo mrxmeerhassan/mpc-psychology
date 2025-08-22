@@ -1,4 +1,4 @@
-import NavBar from "@/components/NavBar";
+
 import Link from "next/link";
 
 export default function AssessmentsPage() {
@@ -25,7 +25,6 @@ export default function AssessmentsPage() {
 
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50">
-			<NavBar />
 			
 			{/* Hero Section */}
 			<section className="relative overflow-hidden bg-gradient-to-r from-emerald-600 to-teal-600 text-white">

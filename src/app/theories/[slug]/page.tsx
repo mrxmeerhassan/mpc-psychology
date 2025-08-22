@@ -1,5 +1,5 @@
 import { readAllContent, readContentBySlug } from "@/lib/mdx";
-import NavBar from "@/components/NavBar";
+
 import { MDXRemote } from "next-mdx-remote/rsc";
 import Link from "next/link";
 
@@ -29,7 +29,6 @@ export default async function TheoryPage({ params }: { params: Promise<{ slug: s
 	
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-indigo-50">
-			<NavBar />
 			
 			{/* Theory Header */}
 			<section className={`relative overflow-hidden bg-gradient-to-r ${data2.color} text-white`}>

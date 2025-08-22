@@ -1,6 +1,6 @@
 "use client";
 
-import NavBar from "@/components/NavBar";
+
 import { useMemo, useState } from "react";
 
 const choices = [
@@ -38,7 +38,6 @@ export default function PHQ9Page() {
 
 	return (
 		<div>
-			<NavBar />
 			<section className="mx-auto max-w-3xl px-4 py-12">
 				<h1 className="text-3xl font-semibold">PHQ‑9 Depression Questionnaire</h1>
 				<p className="mt-2 text-gray-600 dark:text-gray-300">Over the last two weeks, how often have you been bothered by the following problems?</p>

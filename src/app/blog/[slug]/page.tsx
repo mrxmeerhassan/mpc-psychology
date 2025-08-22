@@ -1,5 +1,5 @@
 import { readAllContent, readContentBySlug } from "@/lib/mdx";
-import NavBar from "@/components/NavBar";
+
 import { MDXRemote } from "next-mdx-remote/rsc";
 
 export function generateStaticParams() {
@@ -12,7 +12,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 	if (!data) return <div>Not found</div>;
 	return (
 		<div>
-			<NavBar />
 			<article className="prose prose-emerald mx-auto max-w-3xl px-4 py-12 dark:prose-invert">
 				<h1>{data.meta.title}</h1>
 				<MDXRemote source={data.content} options={{ mdxOptions: { remarkPlugins: [] } }} />

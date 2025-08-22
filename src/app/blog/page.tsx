@@ -1,5 +1,5 @@
 import Link from "next/link";
-import NavBar from "@/components/NavBar";
+
 import { readAllContent } from "@/lib/mdx";
 
 export const dynamic = "force-static";
@@ -8,7 +8,6 @@ export default function BlogPage() {
 	const posts = readAllContent("blog");
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
-			<NavBar />
 			
 			{/* Hero Section */}
 			<section className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-600 text-white">

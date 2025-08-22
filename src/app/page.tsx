@@ -1,4 +1,3 @@
-import NavBar from "@/components/NavBar";
 import Hero from "@/components/Hero";
 import FeatureCards from "@/components/FeatureCards";
 import Link from "next/link";
@@ -7,7 +6,6 @@ import ContactForm from "@/components/ContactForm";
 export default function Home() {
   return (
     <div>
-      <NavBar />
       <Hero />
       <FeatureCards />
       <section className="mx-auto max-w-6xl px-4 py-12 md:py-16 grid grid-cols-1 md:grid-cols-3 gap-6">
