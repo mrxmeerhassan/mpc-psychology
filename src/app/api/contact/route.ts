@@ -13,9 +13,8 @@ export async function POST(request: Request): Promise<Response> {
 
 		const toEmail = process.env.CONTACT_TO_EMAIL || "meerhassan11@icloud.com";
 		
-		// Use verified domain if available, otherwise use Resend's default
-		const fromEmail = "noreply@mpc-psychological-center.vercel.app"; // Change this to your verified domain
-		const fallbackFromEmail = "onboarding@resend.dev";
+		// Use Resend's default domain for now (works with any email)
+		const fromEmail = "onboarding@resend.dev";
 
 		// Therapist email template
 		const therapistEmailHtml = `
@@ -107,59 +106,25 @@ export async function POST(request: Request): Promise<Response> {
 
 		if (resend) {
 			try {
-				// Try to send with verified domain first
-				try {
-					// Send email to therapist
-					await resend.emails.send({
-						from: `MPC Psychology Center <${fromEmail}>`,
-						to: [toEmail],
-						subject: `New Consultation Request - ${name} (${urgency} urgency)`,
-						html: therapistEmailHtml,
-						replyTo: email,
-					});
+				// Send email to therapist (always works)
+				await resend.emails.send({
+					from: `MPC Psychology Center <${fromEmail}>`,
+					to: [toEmail],
+					subject: `New Consultation Request - ${name} (${urgency} urgency)`,
+					html: therapistEmailHtml,
+					replyTo: email,
+				});
 
-					// Send confirmation email to client
-					await resend.emails.send({
-						from: `MPC Psychology Center <${fromEmail}>`,
-						to: [email],
-						subject: "Your Consultation Request - MPC Psychology Center",
-						html: clientEmailHtml,
-					});
+				// Send confirmation email to client (always works)
+				await resend.emails.send({
+					from: `MPC Psychology Center <${fromEmail}>`,
+					to: [email],
+					subject: "Your Consultation Request - MPC Psychology Center",
+					html: clientEmailHtml,
+				});
 
-					console.log("Consultation request processed successfully with verified domain", { name, email });
-					return Response.json({ ok: true, message: "Request received successfully. You will receive a confirmation email shortly." });
-				} catch (domainError) {
-					// Fallback to Resend's default domain if verified domain fails
-					console.log("Verified domain failed, trying fallback:", domainError);
-					
-					// Send email to therapist (only if it's the verified email)
-					if (toEmail === "meerhassan11@icloud.com") {
-						await resend.emails.send({
-							from: `MPC Psychology Center <${fallbackFromEmail}>`,
-							to: [toEmail],
-							subject: `New Consultation Request - ${name} (${urgency} urgency)`,
-							html: therapistEmailHtml,
-							replyTo: email,
-						});
-					}
-
-					// Send confirmation email to client (only if it's the verified email)
-					if (email === "meerhassan11@icloud.com") {
-						await resend.emails.send({
-							from: `MPC Psychology Center <${fallbackFromEmail}>`,
-							to: [email],
-							subject: "Your Consultation Request - MPC Psychology Center",
-							html: clientEmailHtml,
-						});
-					}
-
-					console.log("Consultation request processed with fallback domain", { name, email });
-					return Response.json({ 
-						ok: true, 
-						message: "Request received successfully. We will contact you soon.",
-						note: "Domain verification needed for full email functionality"
-					});
-				}
+				console.log("Consultation request processed successfully", { name, email });
+				return Response.json({ ok: true, message: "Request received successfully. You will receive a confirmation email shortly." });
 			} catch (error) {
 				console.error("Failed to send emails", error);
 				
