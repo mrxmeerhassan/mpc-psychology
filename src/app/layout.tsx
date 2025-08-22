@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
 import SEO from "@/components/SEO";
@@ -50,20 +51,18 @@ export default function RootLayout({
 		<html lang="en">
 			<head>
 				{/* Google Analytics */}
-				<script
-					async
+				<Script
 					src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"
+					strategy="afterInteractive"
 				/>
-				<script
-					dangerouslySetInnerHTML={{
-						__html: `
-							window.dataLayer = window.dataLayer || [];
-							function gtag(){dataLayer.push(arguments);}
-							gtag('js', new Date());
-							gtag('config', 'GA_MEASUREMENT_ID');
-						`,
-					}}
-				/>
+				<Script id="google-analytics" strategy="afterInteractive">
+					{`
+						window.dataLayer = window.dataLayer || [];
+						function gtag(){dataLayer.push(arguments);}
+						gtag('js', new Date());
+						gtag('config', 'GA_MEASUREMENT_ID');
+					`}
+				</Script>
 				
 				{/* Google Search Console Verification */}
 				<meta name="google-site-verification" content="your-verification-code" />
