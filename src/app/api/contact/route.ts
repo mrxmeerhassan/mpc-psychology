@@ -13,7 +13,7 @@ export async function POST(request: Request): Promise<Response> {
 
 		const toEmail = process.env.CONTACT_TO_EMAIL || "meerhassan11@icloud.com";
 		
-		// Use Resend's default domain
+		// Use Resend's default domain (works with verified emails)
 		const fromEmail = "onboarding@resend.dev";
 
 		// Therapist email template
@@ -63,50 +63,9 @@ export async function POST(request: Request): Promise<Response> {
 			</div>
 		`;
 
-		// Client confirmation email template
-		const clientEmailHtml = `
-			<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-				<div style="background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
-					<h1 style="margin: 0; font-size: 24px;">Consultation Request Confirmed</h1>
-					<p style="margin: 10px 0 0 0; opacity: 0.9;">MPC Psychology Center</p>
-				</div>
-				
-				<div style="background: white; padding: 30px; border: 1px solid #e5e7eb; border-radius: 0 0 10px 10px;">
-					<p style="color: #374151; font-size: 16px; line-height: 1.6;">
-						Dear ${name},
-					</p>
-					
-					<p style="color: #374151; font-size: 16px; line-height: 1.6;">
-						Thank you for reaching out to MPC Psychology Center. We have received your consultation request and are excited to help you on your mental health journey.
-					</p>
-
-					<div style="background: #f0f9ff; padding: 20px; border-radius: 8px; border: 1px solid #0ea5e9; margin: 20px 0;">
-						<h3 style="color: #0c4a6e; margin-top: 0;">What Happens Next?</h3>
-						<ol style="color: #1e40af; line-height: 1.8;">
-							<li><strong>Within 24 hours:</strong> One of our therapists will contact you to schedule your free 15-minute consultation</li>
-							<li><strong>Free Consultation:</strong> We'll discuss your needs, answer your questions, and see if we're a good fit</li>
-							<li><strong>Personalized Plan:</strong> If we're a match, we'll create a treatment plan tailored to your goals</li>
-						</ol>
-					</div>
-
-					<div style="background: #f9fafb; padding: 20px; border-radius: 8px; margin: 20px 0;">
-						<h3 style="color: #374151; margin-top: 0;">Your Request Details</h3>
-						<p style="color: #6b7280; margin: 5px 0;"><strong>Urgency Level:</strong> ${urgency.charAt(0).toUpperCase() + urgency.slice(1)}</p>
-						${therapyType ? `<p style="color: #6b7280; margin: 5px 0;"><strong>Therapy Type:</strong> ${therapyType}</p>` : ''}
-						${preferredTime ? `<p style="color: #6b7280; margin: 5px 0;"><strong>Preferred Time:</strong> ${preferredTime}</p>` : ''}
-					</div>
-
-					<p style="color: #374151; font-size: 16px; line-height: 1.6;">
-						Warm regards,<br>
-						<strong>The MPC Psychology Center Team</strong>
-					</p>
-				</div>
-			</div>
-		`;
-
 		if (resend) {
 			try {
-				// Always send to therapist (verified email)
+				// Send email to therapist (verified email - always works)
 				await resend.emails.send({
 					from: `MPC Psychology Center <${fromEmail}>`,
 					to: [toEmail],
@@ -115,25 +74,11 @@ export async function POST(request: Request): Promise<Response> {
 					replyTo: email,
 				});
 
-				// Try to send to client, but handle failures gracefully
-				try {
-					await resend.emails.send({
-						from: `MPC Psychology Center <${fromEmail}>`,
-						to: [email],
-						subject: "Your Consultation Request - MPC Psychology Center",
-						html: clientEmailHtml,
-					});
-					console.log("Client email sent successfully", { email });
-				} catch (clientEmailError) {
-					console.log("Client email failed (unverified email)", { email, error: clientEmailError });
-					// Don't fail the whole request, just log it
-				}
-
 				console.log("Consultation request processed successfully", { name, email });
 				return Response.json({ 
 					ok: true, 
-					message: "Request received successfully. We will contact you within 24 hours.",
-					note: "If you don't receive a confirmation email, please check your spam folder or contact us directly."
+					message: "Thank you! Your consultation request has been received. We will contact you within 24 hours.",
+					note: "You can also contact us directly at meerhassan11@icloud.com if you need immediate assistance."
 				});
 			} catch (error) {
 				console.error("Failed to send emails", error);
