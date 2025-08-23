@@ -4,6 +4,7 @@ import { useState } from "react";
 
 export default function ContactForm() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -17,8 +18,11 @@ export default function ContactForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("loading");
+    setErrorMessage("");
 
     try {
+      console.log("Submitting form data:", formData);
+      
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: {
@@ -26,6 +30,9 @@ export default function ContactForm() {
         },
         body: JSON.stringify(formData),
       });
+
+      const result = await response.json();
+      console.log("API response:", result);
 
       if (response.ok) {
         setStatus("success");
@@ -40,9 +47,12 @@ export default function ContactForm() {
         });
       } else {
         setStatus("error");
+        setErrorMessage(result.error || "Failed to submit booking request");
       }
-    } catch {
+    } catch (error) {
+      console.error("Form submission error:", error);
       setStatus("error");
+      setErrorMessage("Network error. Please try again or contact us directly.");
     }
   };
 
@@ -129,9 +139,10 @@ export default function ContactForm() {
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                   </svg>
-                  <span className="font-semibold">Something went wrong</span>
+                  <span className="font-semibold">Booking Failed</span>
                 </div>
-                <p className="mt-1 text-sm">Please try again or contact us directly.</p>
+                <p className="mt-1 text-sm">{errorMessage || "Please try again or contact us directly."}</p>
+                <p className="mt-2 text-xs">You can also email us directly at: meerhassan11@icloud.com</p>
               </div>
             )}
             
